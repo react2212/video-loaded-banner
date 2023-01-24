@@ -217,6 +217,7 @@ figure {
 						font: 10px/1 'arial';
 						color: #fff;
 						margin-top: 30px;
+						opacity: 0;
 						transform: translateY(100px);
 						transition: opacity 0.5s 0.2s, transform 0.5s 0.2s;
 					}
@@ -349,5 +350,60 @@ figure {
 	100% {
 		transform: scale(5);
 		opacity: 0;
+	}
+}
+
+@media screen and (max-width: 1159px) {
+	header {
+		#gnb {
+			display: none;
+		}
+		.fa-bars {
+			display: block;
+		}
+	}
+
+	figure {
+		.tits {
+			display: none;
+		}
+		.banner {
+			width: 100%;
+		}
+		.controls {
+			width: 40%;
+			bottom: 100%;
+			padding: 20px 10vw;
+		}
+	}
+}
+
+@media screen and (max-width: 669px) {
+	figure {
+		.tits {
+			display: inline-block;
+			h2 {
+				font-size: 10vw;
+				top: -10vw;
+			}
+		}
+		.controls {
+			width: 100%;
+			bottom: calc(100% + 20vw);
+		}
+		.paging {
+			display: none;
+		}
+		.banner ul li .txt {
+			h2 {
+				text-indent: -1000px;
+			}
+			p {
+				display: none;
+			}
+			a {
+				width: 100%;
+			}
+		}
 	}
 }
