@@ -22,6 +22,7 @@ function init() {
 	list.style.left = -100 / showNum + '%';
 	list.prepend(list.lastElementChild);
 }
+
 function next() {
 	if (!enableClick) return;
 	enableClick = false;
@@ -47,7 +48,6 @@ function prev() {
 	enableClick = false;
 	let prev_num = null;
 	current_num !== 0 ? (prev_num = current_num - 1) : (prev_num = len - 1);
-	activation(prev_num);
 	current_num = prev_num;
 
 	new Anime(list, {
@@ -60,10 +60,4 @@ function prev() {
 			enableClick = true;
 		},
 	});
-}
-
-function activation(index) {
-	const currentList = banner.querySelector('ul');
-	for (const el of currentList.children) el.classList.remove('on');
-	currentList.children[index].classList.add('on');
 }
