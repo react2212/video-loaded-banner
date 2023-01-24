@@ -35,3 +35,174 @@ header {
 		display: none;
 	}
 }
+
+figure {
+	width: 100%;
+	height: 60vh;
+	background: #191f26;
+	position: relative;
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+
+	.banner {
+		width: 70%;
+		height: 100%;
+		overflow: hidden;
+		position: absolute;
+		top: 0;
+		right: 0;
+
+		ul {
+			//전체 폭 기준으로 3등분한 패널이 5개 좌우로 묶여야 되므로
+			// 100% / 3한 값에서 다시 곱하기 5개
+			width: calc(100% / 3 * 5);
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+
+			li {
+				float: left;
+				width: calc(100% / 5);
+				height: 100%;
+				border-left: 1px solid rgba(255, 255, 255, 0.2);
+				color: #fff;
+				position: relative;
+				transition: border 0.5s;
+
+				&:before {
+					content: '';
+					width: 100%;
+					height: 100%;
+					background: rgba(21, 32, 44, 0.5);
+					position: absolute;
+					bottom: -100%;
+					left: 0;
+					transition: 0.5s;
+				}
+
+				.txt {
+					width: 80%;
+					left: 10%;
+					position: absolute;
+					top: 60%;
+					transition: 0.5s;
+
+					strong {
+						display: block;
+						width: 100%;
+						font: 20px/1 'orbitron';
+						margin-bottom: 20px;
+						opacity: 0.4;
+						transition: 0.5s;
+					}
+
+					h2 {
+						width: 100%;
+						font: 24px/1 'orbitron';
+						color: #fff;
+						letter-spacing: 1px;
+						opacity: 0.5;
+						padding-top: 20px;
+						position: relative;
+						transition: 0.5s;
+
+						&::before {
+							content: '';
+							display: block;
+							width: 100%;
+							height: 2px;
+							background: rgba(255, 255, 255, 0.5);
+							position: absolute;
+							top: 0;
+							left: 0;
+						}
+						span {
+							display: block;
+							width: 0%;
+							height: 2px;
+							background: orange;
+							opacity: 0.7;
+							position: absolute;
+							top: 0;
+							left: 0;
+						}
+					}
+
+					p {
+						font: 12px/1.3 'arial';
+						color: #fff;
+						opacity: 0;
+						height: 0;
+						margin-top: 30px;
+						overflow: hidden;
+						transition: 0.5s;
+					}
+
+					a {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						width: 120px;
+						height: 30px;
+						border: 1px solid rgba(255, 255, 255, 0.5);
+						font: 10px/1 'arial';
+						color: #fff;
+						margin-top: 30px;
+						transform: translateY(100px);
+						transition: opacity 0.5s 0.2s, transform 0.5s 0.2s;
+					}
+				}
+
+				//li hover style
+				&:hover {
+					border-left: 1px solid transparent;
+					&::before {
+						bottom: 0%;
+					}
+					.txt {
+						top: 20%;
+
+						p {
+							height: auto;
+							opacity: 0.4;
+						}
+						a {
+							transform: translateY(0px);
+							opacity: 1;
+							transition: 0.5s;
+
+							&:hover {
+								background: #fff;
+								color: #555;
+							}
+						}
+					}
+				}
+
+				//목록상에서는 2번째이지만 실제 화면상에서는 첫번째인 활성화 스타일
+				&:nth-of-type(2) {
+					p {
+						opacity: 0.5;
+					}
+					h2 {
+						opacity: 1;
+
+						span {
+							width: 100%;
+							animation: ani 2s linear 1;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@keyframes ani {
+	0% {
+		width: 0%;
+	}
+	100% {
+		width: 100%;
+	}
+}
