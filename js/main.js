@@ -6,17 +6,28 @@ const btnPlay = document.querySelector('.play');
 const btnPause = document.querySelector('.pause');
 const showNum = 3;
 const speed = 500;
+const interval = 3000;
 const len = list.children.length;
 let enableClick = true;
 let current_num = 0;
+let timer = null;
 
 init();
+
+setTimeout(startRolling, interval);
+
 btnNext.addEventListener('click', () => {
 	next();
+	stopRolling();
 });
+
 btnPrev.addEventListener('click', () => {
 	prev();
+	stopRolling();
 });
+
+btnPlay.addEventListener('click', startRolling);
+btnPause.addEventListener('click', stopRolling);
 
 function init() {
 	list.style.left = -100 / showNum + '%';
@@ -28,7 +39,6 @@ function next() {
 	enableClick = false;
 	let next_num = null;
 	current_num !== len - 1 ? (next_num = current_num + 1) : (next_num = 0);
-	activation(next_num);
 	current_num = next_num;
 
 	new Anime(list, {
@@ -60,4 +70,17 @@ function prev() {
 			enableClick = true;
 		},
 	});
+}
+
+function startRolling() {
+	next();
+	timer = setInterval(next, interval);
+	btnPlay.classList.add('on');
+	btnPause.classList.remove('on');
+}
+
+function stopRolling() {
+	clearInterval(timer);
+	btnPause.classList.add('on');
+	btnPlay.classList.remove('on');
 }
