@@ -1,0 +1,37 @@
+@import 'reset';
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+header {
+	width: 100%;
+	height: 40vh;
+	background: #191f26;
+	position: relative;
+	padding: 5vh 10vw;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+
+	h1 {
+		font: bold 24px/1 'orbitron';
+		color: #fff;
+	}
+	#gnb {
+		display: flex;
+		gap: 60px;
+		font: 14px/1 'arial';
+		color: #ddd;
+		padding-top: 10px;
+
+		li {
+			cursor: pointer;
+		}
+	}
+	.fa-bars {
+		position: absolute;
+		right: 10vw;
+		top: 5vh;
+		font-size: 24px;
+		color: #fff;
+		display: none;
+	}
+}
