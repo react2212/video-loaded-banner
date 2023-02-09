@@ -46,15 +46,13 @@ function loadVid() {
 	});
 }
 
-console.log(loadVid());
-console.log(loadImg());
-
 //캐싱 완료후 마스크 화면 제거 함수
 async function endLoading() {
 	console.log('endLoading');
-	const result = await Promise.all([loadImg(), loadVid()]);
+	const [loadedImg, loadedVid] = await Promise.all([loadImg(), loadVid()]);
+	console.log(loadedVid, loadedVid);
 
-	if (result[0] && result[1]) {
+	if (loadedImg && loadedVid) {
 		new Anime(mask, {
 			prop: 'opacity',
 			value: 0,
