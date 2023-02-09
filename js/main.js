@@ -1,133 +1,65 @@
-const banner = document.querySelector('.banner');
-const list = banner.querySelector('ul');
-const tits = document.querySelectorAll('.tits h2');
-const bgFrame = document.querySelector('.bgs');
-const paging = document.querySelector('.paging');
+const vidData = ['vid1.mp4', 'vid2.mp4', 'vid3.mp4', 'vid5.mp4'];
+const frame = document.querySelector('main');
 const mask = document.querySelector('.mask');
-const [btnPrev, btnNext] = document.querySelector('.btns').children;
-const [btnPlay, btnPause] = document.querySelector('.auto').children;
-const [counter, total] = paging.children;
-const vidData = ['vid1.mp4', 'vid2.mp4', 'vid3.mp4', 'vid4.mp4', 'vid5.mp4'];
-const showNum = 3;
-const speed = 500;
-const interval = 3000;
-const len = list.children.length;
-let enableClick = true;
-let current_num = 0;
-let timer = null;
-let vids = null;
-let vid_count = 0;
+let tags = '';
 
-init();
-createVid();
-setTimeout(startRolling, interval);
+const imgs = ['pic1.jpg', 'pic2.jpg', 'pic3.jpg', 'pic4.jpg'];
+const vids = ['vid1.mp4', 'vid2.mp4', 'vid3.mp4', 'vid4.mp4', 'vid5.mp4'];
 
-btnNext.addEventListener('click', () => {
-	next();
-	stopRolling();
-});
+createDOM();
+endLoading();
 
-btnPrev.addEventListener('click', () => {
-	prev();
-	stopRolling();
-});
-
-btnPlay.addEventListener('click', startRolling);
-btnPause.addEventListener('click', stopRolling);
-
-function init() {
-	list.style.left = -100 / showNum + '%';
-	list.prepend(list.lastElementChild);
-	total.innerText = len < 10 ? '0' + len : len;
+function createDOM() {
+	imgs.forEach((src) => (tags += `<img src='vids/${src}' /> `));
+	vids.forEach((src) => (tags += `<video src='vids/${src}' loop autoplay muted></video>`));
+	frame.innerHTML = tags;
 }
 
-function createVid() {
-	let tags = '';
-	vidData.forEach((vid) => (tags += `<video src='vids/${vid}' loop muted autoplay></video>`));
-	bgFrame.innerHTML = tags;
+//이미지 로딩완료 체크 함수
+function loadImg() {
+	return new Promise((res, rej) => {
+		let countImg = 0;
+		const imgDOM = frame.querySelectorAll('img');
 
-	vids = bgFrame.querySelectorAll('video');
-	vids.forEach((vid) => {
-		vid.onloadeddata = () => {
-			vid_count++;
-			console.log(vid_count);
-
-			if (vid_count === vidData.length) {
-				new Anime(mask, {
-					prop: 'opacity',
-					value: 0,
-					duration: 1000,
-					callback: () => mask.remove(),
-				});
-			}
-		};
+		imgDOM.forEach((img) => {
+			img.onload = () => {
+				countImg++;
+				console.log('img loaded', countImg);
+				if (countImg === imgs.length) res(true);
+			};
+		});
 	});
-
-	vids[0].classList.add('on');
 }
+//동영상 로딩완료 체크 함수
+function loadVid() {
+	return new Promise((res, rej) => {
+		let countVid = 0;
+		const vidDOM = frame.querySelectorAll('video');
 
-function next() {
-	if (!enableClick) return;
-	enableClick = false;
-	let next_num = null;
-	current_num !== len - 1 ? (next_num = current_num + 1) : (next_num = 0);
-	current_num = next_num;
-	activation(current_num);
-	setCounter(current_num);
-
-	new Anime(list, {
-		prop: 'left',
-		value: (-100 / showNum) * 2 + '%',
-		duration: speed,
-		callback: () => {
-			list.append(list.firstElementChild);
-			list.style.left = -100 / showNum + '%';
-			enableClick = true;
-		},
+		vidDOM.forEach((vid) => {
+			vid.onloadeddata = () => {
+				countVid++;
+				console.log('vid loaded', countVid);
+				if (countVid === vids.length) res(true);
+			};
+		});
 	});
 }
 
-function prev() {
-	if (!enableClick) return;
-	enableClick = false;
-	let prev_num = null;
-	current_num !== 0 ? (prev_num = current_num - 1) : (prev_num = len - 1);
-	current_num = prev_num;
-	activation(current_num);
-	setCounter(current_num);
+console.log(loadVid());
+console.log(loadImg());
 
-	new Anime(list, {
-		prop: 'left',
-		value: (-100 / showNum) * 0 + '%',
-		duration: speed,
-		callback: () => {
-			list.prepend(list.lastElementChild);
-			list.style.left = -100 / showNum + '%';
-			enableClick = true;
-		},
-	});
-}
+//캐싱 완료후 마스크 화면 제거 함수
+async function endLoading() {
+	console.log('endLoading');
+	const result = await Promise.all([loadImg(), loadVid()]);
 
-function startRolling() {
-	next();
-	timer = setInterval(next, interval);
-	btnPlay.classList.add('on');
-	btnPause.classList.remove('on');
-}
-
-function stopRolling() {
-	clearInterval(timer);
-	btnPause.classList.add('on');
-	btnPlay.classList.remove('on');
-}
-
-function activation(index) {
-	for (const el of tits) el.classList.remove('on');
-	for (const el of vids) el.classList.remove('on');
-	tits[index].classList.add('on');
-	vids[index].classList.add('on');
-}
-
-function setCounter(num) {
-	counter.innerText = '0' + (num + 1);
+	if (result[0] && result[1]) {
+		new Anime(mask, {
+			prop: 'opacity',
+			value: 0,
+			duration: 1000,
+			callback: () => mask.remove(),
+		});
+	}
 }
